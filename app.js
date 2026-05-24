@@ -1,13 +1,16 @@
 // app.js
 const panels = document.querySelectorAll('.panel');
 const modal = document.getElementById('component-modal');
+const modalContent = document.querySelector('.modal-content'); // Variable añadida para manipular el ancho
 const closeModalBtn = document.getElementById('close-modal');
 const modalTitle = document.getElementById('modal-title');
 const modalBody = document.getElementById('modal-body');
 
+// Añadimos una propiedad "maxWidth" a cada componente del registro
 const componentRegistry = {
   'custom-input': {
     title: 'Custom Input',
+    maxWidth: '500px',
     html: `
       <div style="text-align: left; width: 100%; display: flex; flex-direction: column; gap: 15px;">
         <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 5px;">
@@ -44,6 +47,7 @@ const componentRegistry = {
 
   'custom-select': {
     title: 'Select Dinámico',
+    maxWidth: '500px',
     html: `<custom-select id="demo-select" enable-search="true" multiple="true" placeholder="Selecciona productos..."></custom-select>`,
     init: () => {
       const select = document.getElementById('demo-select');
@@ -55,43 +59,70 @@ const componentRegistry = {
 
   'date-range': {
     title: 'Date Range Picker',
+    maxWidth: '450px',
     html: `<date-range color-tema="#3ee7b8" allow-past="false" allow-future="true"></date-range>`
   },
 
   'custom-modal-comp': {
     title: 'Sistema de Modales',
+    maxWidth: '650px',
     html: `
-      <div style="text-align: center; color: white; display: flex; flex-direction: column; gap: 18px; align-items: center; width: 100%;">
-        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 5px;">
-          Haz clic en cualquiera de las opciones para desplegar cada tipo de modal con sus efectos visuales, iconos vectoriales y transiciones en alta definición:
+      <style>
+        .btn-trigger {
+          padding: 16px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+          border: 1px solid transparent;
+          backdrop-filter: blur(5px);
+        }
+        .btn-trigger:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .btn-info { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; }
+        .btn-info:hover { background: rgba(59, 130, 246, 0.25); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.15); }
+        
+        .btn-error { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
+        .btn-error:hover { background: rgba(239, 68, 68, 0.25); box-shadow: 0 10px 20px rgba(239, 68, 68, 0.15); }
+        
+        .btn-confirm { background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15; }
+        .btn-confirm:hover { background: rgba(234, 179, 8, 0.25); box-shadow: 0 10px 20px rgba(234, 179, 8, 0.15); }
+        
+        .btn-custom { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.4); color: #a78bfa; }
+        .btn-custom:hover { background: rgba(139, 92, 246, 0.25); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.15); }
+      </style>
+
+      <div style="text-align: center; color: white; display: flex; flex-direction: column; gap: 24px; align-items: center; width: 100%;">
+        <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0; max-width: 90%;">
+          Haz clic en cualquiera de las opciones para desplegar cada tipo de modal con sus nuevos efectos visuales, rebotes fluidos y sombras dinámicas:
         </p>
         
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 440px;">
-          <button onclick="document.getElementById('modal-render-info').open()" style="padding: 14px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #60a5fa; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'">🔷 Modal Info</button>
-          
-          <button onclick="document.getElementById('modal-render-error').open()" style="padding: 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #f87171; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.25)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">🔺 Modal Error</button>
-          
-          <button onclick="document.getElementById('modal-render-confirm').open()" style="padding: 14px; background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #facc15; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(234, 179, 8, 0.25)'" onmouseout="this.style.background='rgba(234, 179, 8, 0.15)'">⚠️ Confirmación</button>
-          
-          <button onclick="document.getElementById('modal-render-custom').open()" style="padding: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #a78bfa; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">✨ Personalizado</button>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; max-width: 460px;">
+          <button class="btn-trigger btn-info" onclick="document.getElementById('modal-render-info').open()">🔷 Modal Info</button>
+          <button class="btn-trigger btn-error" onclick="document.getElementById('modal-render-error').open()">🔺 Modal Error</button>
+          <button class="btn-trigger btn-confirm" onclick="document.getElementById('modal-render-confirm').open()">⚠️ Confirmación</button>
+          <button class="btn-trigger btn-custom" onclick="document.getElementById('modal-render-custom').open()">✨ Personalizado</button>
         </div>
 
-        <custom-modal id="modal-render-info" type="info" btn-1="Entendido" bg-color="rgba(15, 23, 42, 0.9)">
+        <custom-modal id="modal-render-info" type="info" btn-1="Entendido" bg-color="rgba(15, 23, 42, 0.85)">
           <h3 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 18px;">Notificación de Éxito</h3>
           <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Los componentes compartidos se han integrado correctamente en la rama principal del repositorio de desarrollo.</p>
         </custom-modal>
 
-        <custom-modal id="modal-render-error" type="error" btn-1="Reintentar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.9)">
+        <custom-modal id="modal-render-error" type="error" btn-1="Reintentar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.85)">
           <h3 style="color: #ef4444; margin: 0 0 10px 0; font-size: 18px;">Fallo de Compilación</h3>
           <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Se detectaron caracteres no permitidos durante el análisis en tiempo real de las expresiones regulares.</p>
         </custom-modal>
 
-        <custom-modal id="modal-render-confirm" type="confirm" btn-1="Sí, Continuar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.9)">
+        <custom-modal id="modal-render-confirm" type="confirm" btn-1="Sí, Continuar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.85)">
           <h3 style="color: #eab308; margin: 0 0 10px 0; font-size: 18px;">¿Confirmar Cambios?</h3>
           <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Estás a punto de sincronizar las modificaciones globales en los estilos del panel interactivo de la galería.</p>
         </custom-modal>
 
-        <custom-modal id="modal-render-custom" type="custom" header-image="components/select-dinamico/fondo 2.jpg" color="#3ee7b8" btn-1="Guardar Ajustes" btn-2="Cerrar" bg-color="rgba(10, 15, 30, 0.94)">
+        <custom-modal id="modal-render-custom" type="custom" header-image="components/select-dinamico/fondo 2.jpg" color="#3ee7b8" btn-1="Guardar Ajustes" btn-2="Cerrar" bg-color="rgba(10, 15, 30, 0.90)">
           <h3 style="color: #3ee7b8; margin: 0 0 8px 0; font-size: 19px; text-align: center;">Fondo de Pantalla Activo</h3>
           <p style="color: #cbd5e1; margin: 0 0 15px 0; font-size: 14px; text-align: center; line-height: 1.5;">El entorno visual neumórfico y de cristal emula perfectamente la configuración cargada en el directorio.</p>
           <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
@@ -107,6 +138,7 @@ const componentRegistry = {
 
   'data-table': {
     title: 'Data Table Interactiva',
+    maxWidth: '900px', // Hacemos el modal extremadamente ancho para que la tabla no se asfixie
     html: `<custom-table id="demo-table" page-size="5"></custom-table>`,
     init: () => {
       const table = document.getElementById('demo-table');
@@ -135,6 +167,10 @@ panels.forEach(panel => {
     if (data) {
       modalTitle.textContent = data.title;
       modalBody.innerHTML = data.html; 
+      
+      // Inyectamos el tamaño específico del componente en el CSS del contenedor modal
+      modalContent.style.maxWidth = data.maxWidth || '500px';
+
       modal.classList.remove('hidden'); 
       
       // Si el componente requiere inyectar datos JS, ejecutamos su función de inicialización
