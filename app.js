@@ -49,15 +49,48 @@ const componentRegistry = {
   },
 
   'custom-modal-comp': {
-    title: 'Sistema de Modal',
+    title: 'Sistema de Modales',
     html: `
-      <div style="text-align: center; color: white;">
-        <p style="margin-bottom: 20px;">Haz clic en el botón para invocar el componente desde este entorno.</p>
-        <custom-modal id="demo-modal" type="confirm" btn-1="Aceptar" btn-2="Cancelar">
-          <h3 style="color:#eab308; margin-top:0;">Acción Requerida</h3>
-          <p>El componente modal está operando correctamente.</p>
+      <div style="text-align: center; color: white; display: flex; flex-direction: column; gap: 18px; align-items: center; width: 100%;">
+        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 5px;">
+          Haz clic en cualquiera de las opciones para desplegar cada tipo de modal con sus efectos visuales, iconos vectoriales y transiciones en alta definición:
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; max-width: 440px;">
+          <button onclick="document.getElementById('modal-render-info').open()" style="padding: 14px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #60a5fa; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'">🔷 Modal Info</button>
+          
+          <button onclick="document.getElementById('modal-render-error').open()" style="padding: 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #f87171; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.25)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">🔺 Modal Error</button>
+          
+          <button onclick="document.getElementById('modal-render-confirm').open()" style="padding: 14px; background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #facc15; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(234, 179, 8, 0.25)'" onmouseout="this.style.background='rgba(234, 179, 8, 0.15)'">⚠️ Confirmación</button>
+          
+          <button onclick="document.getElementById('modal-render-custom').open()" style="padding: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 10px; cursor: pointer; font-weight: 600; color: #a78bfa; transition: all 0.2s; font-size: 14px;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">✨ Personalizado</button>
+        </div>
+
+        <custom-modal id="modal-render-info" type="info" btn-1="Entendido" bg-color="rgba(15, 23, 42, 0.9)">
+          <h3 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 18px;">Notificación de Éxito</h3>
+          <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Los componentes compartidos se han integrado correctamente en la rama principal del repositorio de desarrollo.</p>
         </custom-modal>
-        <button onclick="document.getElementById('demo-modal').open()" style="padding: 10px 20px; background: #3ee7b8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: #0f172a;">Lanzar Componente</button>
+
+        <custom-modal id="modal-render-error" type="error" btn-1="Reintentar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.9)">
+          <h3 style="color: #ef4444; margin: 0 0 10px 0; font-size: 18px;">Fallo de Compilación</h3>
+          <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Se detectaron caracteres no permitidos durante el análisis en tiempo real de las expresiones regulares.</p>
+        </custom-modal>
+
+        <custom-modal id="modal-render-confirm" type="confirm" btn-1="Sí, Continuar" btn-2="Cancelar" bg-color="rgba(15, 23, 42, 0.9)">
+          <h3 style="color: #eab308; margin: 0 0 10px 0; font-size: 18px;">¿Confirmar Cambios?</h3>
+          <p style="color: #cbd5e1; margin: 0; font-size: 14px; line-height: 1.6;">Estás a punto de sincronizar las modificaciones globales en los estilos del panel interactivo de la galería.</p>
+        </custom-modal>
+
+        <custom-modal id="modal-render-custom" type="custom" header-image="components/select-dinamico/fondo 2.jpg" color="#3ee7b8" btn-1="Guardar Ajustes" btn-2="Cerrar" bg-color="rgba(10, 15, 30, 0.94)">
+          <h3 style="color: #3ee7b8; margin: 0 0 8px 0; font-size: 19px; text-align: center;">Fondo de Pantalla Activo</h3>
+          <p style="color: #cbd5e1; margin: 0 0 15px 0; font-size: 14px; text-align: center; line-height: 1.5;">El entorno visual neumórfico y de cristal emula perfectamente la configuración cargada en el directorio.</p>
+          <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
+            <span style="font-size: 11px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 4px;">EQUIPO DE DESARROLLO:</span>
+            <span style="font-size: 13px; color: #f8fafc; display: block;">• Yox (Arquitectura Frontend)</span>
+            <span style="font-size: 13px; color: #f8fafc; display: block;">• David (Controladores de Estado)</span>
+            <span style="font-size: 13px; color: #f8fafc; display: block;">• Ángel (Validaciones del Core)</span>
+          </div>
+        </custom-modal>
       </div>
     `
   },
