@@ -32,6 +32,17 @@ const componentRegistry = {
     `
   },
 
+  'custom-select': {
+    title: 'Select Dinámico',
+    html: `<custom-select id="demo-select" enable-search="true" multiple="true" placeholder="Selecciona productos..."></custom-select>`,
+    init: () => {
+      const select = document.getElementById('demo-select');
+      if (select) {
+        select.opciones = ['HP Pavilion', 'Asus VivoBook', 'MacBook Air M2', 'Teclado Redragon', 'Monitor 24"'];
+      }
+    }
+  },
+
   'date-range': {
     title: 'Date Range Picker',
     html: `<date-range color-tema="#3ee7b8" allow-past="false" allow-future="true"></date-range>`
@@ -57,7 +68,6 @@ const componentRegistry = {
     init: () => {
       const table = document.getElementById('demo-table');
       if (table) {
-        // Configuramos las columnas y los datos del equipo
         table.columns = [
           { key: 'id', label: 'ID', type: 'number' },
           { key: 'nombre', label: 'Nombre', type: 'string' },
@@ -86,7 +96,8 @@ panels.forEach(panel => {
       
       // Si el componente requiere inyectar datos JS, ejecutamos su función de inicialización
       if (data.init) {
-        data.init();
+        // Un pequeño timeout asegura que el componente ya está renderizado en el DOM
+        setTimeout(() => data.init(), 50);
       }
     }
   });

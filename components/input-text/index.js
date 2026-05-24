@@ -115,7 +115,7 @@ class CustomInput extends HTMLElement {
         `;
     }
 }
-customElements.define('input-text', CustomInput);
+customElements.define('custom-input', CustomInput);
 
 if (document.body.children.length === 0) {
     const style = document.createElement('style');
@@ -124,10 +124,10 @@ if (document.body.children.length === 0) {
     const sandbox = document.createElement('div');
     sandbox.className = 'sandbox';
     sandbox.innerHTML = '<h3 style="color:#3ee7b8;margin-top:0;text-align:center;font-weight:600;">Custom Input</h3>'
-        + '<div><span class="label">1. Solo N&uacute;meros (M&iacute;n 3, M&aacute;x 8)</span><input-text tipo="numeros" min="3" max="8" ancho="100%" largo="45px" placeholder="Ej: 123456"></input-text></div>'
-        + '<div><span class="label">2. Solo Letras</span><input-text tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Angel Torres"></input-text></div>'
-        + '<div><span class="label">3. Letras y N&uacute;meros (Sin especiales)</span><input-text tipo="sin-especiales" ancho="100%" largo="45px" placeholder="Ej: User2026"></input-text></div>'
-        + '<div><span class="label">4. Todo (Admite especiales)</span><input-text tipo="todo" ancho="100%" largo="45px" placeholder="Ej: hola@mundo.com!"></input-text></div>';
+        + '<div><span class="label">1. Solo N&uacute;meros (M&iacute;n 3, M&aacute;x 8)</span><custom-input tipo="numeros" min="3" max="8" ancho="100%" largo="45px" placeholder="Ej: 123456"></custom-input></div>'
+        + '<div><span class="label">2. Solo Letras</span><custom-input tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Angel Torres"></custom-input></div>'
+        + '<div><span class="label">3. Letras y N&uacute;meros (Sin especiales)</span><custom-input tipo="sin-especiales" ancho="100%" largo="45px" placeholder="Ej: User2026"></custom-input></div>'
+        + '<div><span class="label">4. Todo (Admite especiales)</span><custom-input tipo="todo" ancho="100%" largo="45px" placeholder="Ej: hola@mundo.com!"></custom-input></div>';
     document.body.appendChild(sandbox);
 }
 
