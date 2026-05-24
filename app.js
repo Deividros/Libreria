@@ -21,12 +21,22 @@ const componentRegistry = {
         
         <div>
           <label style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-bottom: 5px; display: block;">2. Solo Letras</label>
-          <custom-input tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Hola Mundo"></custom-input>
+          <custom-input tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Angel Torres"></custom-input>
         </div>
         
         <div>
           <label style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-bottom: 5px; display: block;">3. Alfanumérico (Sin especiales)</label>
           <custom-input tipo="sin-especiales" ancho="100%" largo="45px" placeholder="Ej: User2026"></custom-input>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-bottom: 5px; display: block;">4. Todo (Admite especiales)</label>
+          <custom-input tipo="todo" ancho="100%" largo="45px" placeholder="Ej: hola@mundo.com!"></custom-input>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-bottom: 5px; display: block;">5. Solo Caracteres Especiales</label>
+          <custom-input tipo="especiales" ancho="100%" largo="45px" placeholder="Ej: @#$%-*!"></custom-input>
         </div>
       </div>
     `

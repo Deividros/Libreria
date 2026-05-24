@@ -31,31 +31,32 @@ class CustomInput extends HTMLElement {
         this._errorMsg = '';
 
         if (value.length > 0) {
-            // 1. Validación de Longitud (Mínimo y Máximo)
-            if (value.length < min) { 
+            // 1. Validación de Tipo (Prioridad para el feedback visual)
+            if (tipo === 'numeros' && !/^[0-9]+$/.test(value)) { 
+                this._errorMsg = 'Error: Solo se admiten números.'; 
+                isValid = false; 
+            } 
+            else if (tipo === 'letras' && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) { 
+                this._errorMsg = 'Error: Solo se admiten letras.'; 
+                isValid = false; 
+            } 
+            else if (tipo === 'sin-especiales' && !/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) { 
+                this._errorMsg = 'Error: No se admiten caracteres especiales.'; 
+                isValid = false; 
+            }
+            // 2. Validación de Longitud (Solo si el tipo es correcto)
+            else if (value.length < min) { 
                 this._errorMsg = `Se requieren al menos ${min} caracteres.`; 
                 isValid = false; 
             } 
             else if (value.length > max) { 
                 this._errorMsg = `Límite excedido (Máximo ${max}).`; 
                 isValid = false; 
-            } 
-            else {
-                // 2. Validación por Tipo (Regex)
-                if (tipo === 'numeros' && !/^[0-9]+$/.test(value)) { 
-                    this._errorMsg = 'Error: Solo se admiten números.'; 
-                    isValid = false; 
-                } 
-                else if (tipo === 'letras' && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) { 
-                    this._errorMsg = 'Error: Solo se admiten letras.'; 
-                    isValid = false; 
-                } 
-                else if (tipo === 'sin-especiales' && !/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) { 
-                    this._errorMsg = 'Error: No se admiten caracteres especiales.'; 
-                    isValid = false; 
-                }
-                // Si el tipo es 'todo', admite caracteres especiales y no genera error por tipo.
             }
+        } else if (min > 0) {
+            // 3. Validación de campo vacío si se exige un mínimo
+            this._errorMsg = `Campo obligatorio. Mínimo ${min} caracteres.`; 
+            isValid = false;
         }
 
         this._updateUI(isValid);
@@ -82,11 +83,8 @@ class CustomInput extends HTMLElement {
         const max = this.getAttribute('max');
         if (max) input.setAttribute('maxlength', max);
 
+        // Eliminamos los .replace() para permitir que el texto se valide correctamente
         input.addEventListener('input', (e) => {
-            const tipo = this.getAttribute('tipo');
-            if (tipo === 'numeros') e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            if (tipo === 'letras') e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-            if (tipo === 'sin-especiales') e.target.value = e.target.value.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, '');
             this._validate(e.target.value);
             
             this.dispatchEvent(new CustomEvent('valor-cambiado', { 
@@ -115,7 +113,9 @@ class CustomInput extends HTMLElement {
         `;
     }
 }
-customElements.define('input-text', CustomInput);
+
+// Retenemos el nombre original del componente en el registro global
+customElements.define('custom-input', CustomInput);
 
 if (document.body.children.length === 0) {
     const style = document.createElement('style');
@@ -123,11 +123,12 @@ if (document.body.children.length === 0) {
     document.head.appendChild(style);
     const sandbox = document.createElement('div');
     sandbox.className = 'sandbox';
+    // Actualizamos las etiquetas de prueba para coincidir con el nombre custom-input
     sandbox.innerHTML = '<h3 style="color:#3ee7b8;margin-top:0;text-align:center;font-weight:600;">Custom Input</h3>'
-        + '<div><span class="label">1. Solo N&uacute;meros (M&iacute;n 3, M&aacute;x 8)</span><input-text tipo="numeros" min="3" max="8" ancho="100%" largo="45px" placeholder="Ej: 123456"></input-text></div>'
-        + '<div><span class="label">2. Solo Letras</span><input-text tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Angel Torres"></input-text></div>'
-        + '<div><span class="label">3. Letras y N&uacute;meros (Sin especiales)</span><input-text tipo="sin-especiales" ancho="100%" largo="45px" placeholder="Ej: User2026"></input-text></div>'
-        + '<div><span class="label">4. Todo (Admite especiales)</span><input-text tipo="todo" ancho="100%" largo="45px" placeholder="Ej: hola@mundo.com!"></input-text></div>';
+        + '<div><span class="label">1. Solo N&uacute;meros (M&iacute;n 3, M&aacute;x 8)</span><custom-input tipo="numeros" min="3" max="8" ancho="100%" largo="45px" placeholder="Ej: 123456"></custom-input></div>'
+        + '<div><span class="label">2. Solo Letras</span><custom-input tipo="letras" ancho="100%" largo="45px" placeholder="Ej: Hola Mundo"></custom-input></div>'
+        + '<div><span class="label">3. Letras y N&uacute;meros (Sin especiales)</span><custom-input tipo="sin-especiales" ancho="100%" largo="45px" placeholder="Ej: User2026"></custom-input></div>'
+        + '<div><span class="label">4. Todo (Admite especiales)</span><custom-input tipo="todo" ancho="100%" largo="45px" placeholder="Ej: hola@mundo.com!"></custom-input></div>';
     document.body.appendChild(sandbox);
 }
 
