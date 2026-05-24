@@ -138,7 +138,7 @@ const componentRegistry = {
 
   'data-table': {
     title: 'Data Table Interactiva',
-    maxWidth: '900px', // Hacemos el modal extremadamente ancho para que la tabla no se asfixie
+    maxWidth: '900px',
     html: `<custom-table id="demo-table" page-size="5"></custom-table>`,
     init: () => {
       const table = document.getElementById('demo-table');
@@ -146,12 +146,18 @@ const componentRegistry = {
         table.columns = [
           { key: 'id', label: 'ID', type: 'number' },
           { key: 'nombre', label: 'Nombre', type: 'string' },
-          { key: 'rol', label: 'Rol', type: 'string' }
+          { key: 'rol', label: 'Rol', type: 'string' },
+          { key: 'proyecto', label: 'Proyecto', type: 'string' },
+          { key: 'estado', label: 'Estado', type: 'string' }
         ];
         table.data = [
-          { id: 1, nombre: 'Yox', rol: 'Frontend' },
-          { id: 2, nombre: 'David', rol: 'Backend' },
-          { id: 3, nombre: 'Ángel', rol: 'Full Stack' }
+          { id: 1, nombre: 'Yox', rol: 'Frontend', proyecto: 'Cinelandia-PWA', estado: 'Activo' },
+          { id: 2, nombre: 'David', rol: 'Backend', proyecto: 'Sistema Gestor', estado: 'Activo' },
+          { id: 3, nombre: 'Ángel', rol: 'Full Stack', proyecto: 'Component Library', estado: 'Pausado' },
+          { id: 4, nombre: 'Sgotorres', rol: 'Lead Dev', proyecto: 'Librería UI', estado: 'Activo' },
+          { id: 5, nombre: 'Tester One', rol: 'QA', proyecto: 'Cinelandia-PWA', estado: 'Agotado' },
+          { id: 6, nombre: 'Dev Support', rol: 'DevOps', proyecto: 'Infraestructura', estado: 'Activo' },
+          { id: 7, nombre: 'UI Designer', rol: 'Figma Pro', proyecto: 'Librería UI', estado: 'Pausado' }
         ];
       }
     }
